@@ -4,9 +4,11 @@ const app = express();
 const connectDB = require('./dbConnect');
 const productRoutes = require('./routes/productRoutes');
 const port = process.env.PORT || 3000;
+const cors = require('cors');
 
 // middleware
 app.use(express.json());
+app.use(cors());
 
 //routes
 app.use('/api/v1/products', productRoutes);
