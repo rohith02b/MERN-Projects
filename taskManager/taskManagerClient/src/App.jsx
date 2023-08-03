@@ -4,6 +4,23 @@ import axios from 'axios';
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
+  const [task, setTask] = useState({
+    name: '',
+  });
+
+  const handleChange = (e) => {
+    setTask((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(`http://localhost:3000/api/v1/tasks/`, task);
+      getTasks();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     getTasks();
@@ -73,6 +90,22 @@ const App = () => {
   return (
     <>
       <h1 className='text-3xl text-center mt-24'>Task Manager</h1>
+      <div className='text-center'>
+        <input
+          type='text'
+          name='name'
+          id='name'
+          className='mt-12 border border-lg border-slate-800 w-1/4 h-12 rounded-full mx-6 px-3'
+          placeholder='Enter task'
+          onChange={handleChange}
+        />
+        <button
+          className='px-5 py-3 rounded-full bg-green-600 text-white hover:bg-green-400 hover:text-black transition-all duration-300'
+          onClick={handleSubmit}
+        >
+          Add
+        </button>
+      </div>
       <div className='mt-20'>{allTasks}</div>
     </>
   );
